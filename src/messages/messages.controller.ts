@@ -1,4 +1,4 @@
-import { Body, Controller, Get, NotFoundException, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 import { CreateMessageDTO } from './dtos/create-message.dto';
 import { MessagesService } from './messages.service';
 
@@ -35,7 +35,16 @@ export class MessagesController {
     createMessage(@Body() body: CreateMessageDTO) {
         console.log("Create Message");
         console.log(body.content);
-        this.messagesService.create(body.content)
+        this.messagesService.create(body.content,body.status)
         return body;
+    }
+    @Put("/:id")
+    updateMessage(@Param("id") id: string,@Body() body: Partial<CreateMessageDTO>){
+        this.messagesService.update(id,body);
+        return body;
+    }
+    @Delete("/:id")
+    deleteMessage(@Param("id") id: string){
+        this.messagesService.delete(id);
     }
 }

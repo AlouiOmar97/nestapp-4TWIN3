@@ -1,23 +1,46 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { MessagesRepository } from "./messages.repository";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Message } from "./message.entity";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class MessagesService {
 //messagesRepository: MessagesRepository
-constructor(private readonly messagesRepository: MessagesRepository) {
+constructor(@InjectRepository(Message) private readonly messagesRepository: Repository<Message>) {
+//constructor(private readonly messagesRepository: MessagesRepository) {
 //constructor() {
 //this.messagesRepository = new MessagesRepository()
 }
 findOne(id: string) {
-return this.messagesRepository.findOne(id)
+//return this.messagesRepository.findOne(id)
+return this.messagesRepository.findOneById(id)
+
 }
 
 findAll() {
-return this.messagesRepository.findAll()
+//return this.messagesRepository.findAll()
+return this.messagesRepository.find()
+
 }
 
-create(content: string) {
-return this.messagesRepository.create(content)
+create(content: string,status: string) {
+//return this.messagesRepository.create(content)
+this.messagesRepository.save({content,status});
 }
+async update (id :string,message:Partial<Message>)
+{
+    const msg=await this.findOne(id);
+    if (!msg)
+        throw new NotFoundException("message not found");
+Object.assign(msg,message);
+await this.messagesRepository.save(msg);
 
+}
+async delete (id : string ){
+    const msg=await this.findOne(id);
+if(!msg)
+    throw new NotFoundException("message not found ");
+    await this.messagesRepository.remove(msg);
+}
 }
