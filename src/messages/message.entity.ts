@@ -1,4 +1,4 @@
-import { Entity, ObjectIdColumn, ObjectId, Column } from 'typeorm';
+import { Entity, ObjectIdColumn, ObjectId, Column, BeforeInsert, AfterInsert } from 'typeorm';
 
 @Entity()
 export class Message {
@@ -8,6 +8,18 @@ _id: ObjectId;
 content: string;
 @Column()
 status: string;
-@Column({ default: () => "CURRENT_TIMESTAMP" })
+@Column()
 date: Date;
+
+@BeforeInsert()
+setDate() {
+    console.log("Setting the date");
+    this.date = new Date();
+}
+
+@AfterInsert()
+logInsert() {
+    console.log("Message inserted with id: " + this._id);
+}
+
 }

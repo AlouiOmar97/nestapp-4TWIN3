@@ -35,8 +35,7 @@ export class MessagesController {
     createMessage(@Body() body: CreateMessageDTO) {
         console.log("Create Message");
         console.log(body.content);
-        this.messagesService.create(body.content,body.status)
-        return body;
+        return this.messagesService.create(body.content,body.status);
     }
     @Put("/:id")
     updateMessage(@Param("id") id: string,@Body() body: Partial<CreateMessageDTO>){

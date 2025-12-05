@@ -24,17 +24,23 @@ return this.messagesRepository.find()
 
 }
 
-create(content: string,status: string) {
+async create(content: string,status: string) {
 //return this.messagesRepository.create(content)
-this.messagesRepository.save({content,status});
+let message = this.messagesRepository.create({content,status});
+await this.messagesRepository.save(message);
+//this.messagesRepository.de
+console.log(message);
+
+return message;
+//this.messagesRepository.insert({content,status});
 }
 async update (id :string,message:Partial<Message>)
 {
     const msg=await this.findOne(id);
     if (!msg)
         throw new NotFoundException("message not found");
-Object.assign(msg,message);
-await this.messagesRepository.save(msg);
+    Object.assign(msg,message);
+    await this.messagesRepository.save(msg);
 
 }
 async delete (id : string ){
