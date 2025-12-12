@@ -14,6 +14,7 @@ status: string;
 @Column()
 date: Date;
 
+
 @BeforeInsert()
 setDate() {
     console.log("Setting the date");
