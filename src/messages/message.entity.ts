@@ -1,12 +1,15 @@
+import { Exclude } from 'class-transformer';
 import { Entity, ObjectIdColumn, ObjectId, Column, BeforeInsert, AfterInsert } from 'typeorm';
 
 @Entity()
 export class Message {
 @ObjectIdColumn()
+@Exclude()
 _id: ObjectId;
 @Column()
 content: string;
 @Column()
+@Exclude()
 status: string;
 @Column()
 date: Date;

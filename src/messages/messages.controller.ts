@@ -1,7 +1,10 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get, NotFoundException, Param, Post, Put, UseInterceptors } from '@nestjs/common';
 import { CreateMessageDTO } from './dtos/create-message.dto';
 import { MessagesService } from './messages.service';
+import { SerializerInterceptor } from 'src/interceptors/serializer.interceptor';
 
+//@UseInterceptors(ClassSerializerInterceptor)
+@UseInterceptors(SerializerInterceptor)
 @Controller('messages')
 export class MessagesController {
     //messagesService: MessagesService
